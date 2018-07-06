@@ -57,7 +57,7 @@ const sites = {
 	},
 	globeandmail: {
 		js: [
-			"*://*.theglobeandmail.com/pb/gr/c/default/*/story-bundle/*.js*"
+			"*://*.theglobeandmail.com/*/story-bundle-js/*.js*"
 		]
 	},
 };
