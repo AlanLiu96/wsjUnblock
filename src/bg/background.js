@@ -1,3 +1,7 @@
+// mask as googlebot for user agent
+// from https://support.google.com/webmasters/answer/1061943
+const UA_Desktop = "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+const UA_Mobile = "Chrome/41.0.2272.96 Mobile Safari/537.36 (compatible ; Googlebot/2.1 ; +http://www.google.com/bot.html)"
 
 // new http header parameters to override
 const newHeader = {
@@ -12,6 +16,14 @@ const newHeader = {
 	cachecontrol: {
 		name: "Cache-Control",
 		value: "max-age=0"
+	},
+	user_agent: {
+		name: "User-Agent",
+		value: UA_Desktop
+	},
+	forwarded_for: { //needed in case ip checks for googlebot
+		name: "X-Forwarded-For",
+		value: "66.249.66.1" // googlebot's ip :) 
 	}
 };
 
@@ -33,6 +45,7 @@ const sites = {
 		url: "*://*.ft.com/*",
 	},
 	nyt: {
+		url: "*://*.nytimes.com/*",
 		js: [
 			"*://*.com/*mtr.js", // this one causes a pop up asking for subscription
 		]
@@ -43,23 +56,18 @@ const sites = {
 			"*://*.bwbx.io/s3/javelin/public/javelin/js/pianola/*",
 		]
 	},
-	bizjournals: {
-		url: "*://*.bizjournals.com/*",
-		js: [
-			"*://*.bizjournals.com/dist/js/article.min.js*"
-		]
+	economist: {
+		url: "*://*.economist.com/*",
 	},
-	philly: {
-		url: "*://*.philly.com/*",
+	medium: {
+		url: "*://*.medium.com/*",
 	},
-	kleinezeitung: {
-		url: "*://*.kleinezeitung.at/*",
+	quora: {
+		url: "*://*.quora.com/*",
 	},
-	globeandmail: {
-		js: [
-			"*://*.theglobeandmail.com/*/story-bundle-js/*.js*"
-		]
-	},
+	linkedin: {
+		url: "*://*.linkedin.com/*",
+	}
 };
 
 // extract all script urls we want to block
@@ -95,7 +103,10 @@ browser.webRequest.onBeforeSendHeaders.addListener(
 
 		// remove existing referer and cookie
 		for (let i = 0; i < details.requestHeaders.length; i++) {
-			if (details.requestHeaders[i].name === newHeader.referer.name || details.requestHeaders[i].name === newHeader.cookie.name) {
+			if (details.requestHeaders[i].name === newHeader.referer.name || 
+				details.requestHeaders[i].name === newHeader.cookie.name ||
+				details.requestHeaders[i].name === newHeader.user_agent.name ||
+				details.requestHeaders[i].name === newHeader.forwarded_for.name) {
 				details.requestHeaders.splice(i, 1);
 				i--;
 			}
@@ -105,6 +116,8 @@ browser.webRequest.onBeforeSendHeaders.addListener(
 		details.requestHeaders.push(newHeader.referer);
 		// remove cache
 		details.requestHeaders.push(newHeader.cachecontrol);
+		details.requestHeaders.push(newHeader.user_agent);
+		details.requestHeaders.push(newHeader.forwarded_for);
 
 		return { requestHeaders: details.requestHeaders };
 	}, {

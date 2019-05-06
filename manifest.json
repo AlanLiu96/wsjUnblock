@@ -1,10 +1,10 @@
 {
   "name": "Make WSJ & NYT Great Again",
-  "version": "0.4",
+  "version": "0.5",
   "manifest_version": 2,
   "description": "Get around the paywall for many WSJ, NYT & FT content",
   "author": "Jinsong Li",
-  "homepage_url": "http://blog.jinsongli.com",
+  "homepage_url": "http://wsj.com",
   "icons": {
     "48": "icons/eric_cartman.png"
   },
@@ -38,11 +38,13 @@
     "http://*.bwbx.io/*",
     "https://*.washingtonpost.com/*",
     "http://*.washingtonpost.com/*",
-    "http://*.philly.com/*",
-    "https://*.bizjournals.com/*",
-    "http://*.bizjournals.com/*",
-    "http://www.kleinezeitung.at/*",
-    "https://*.theglobeandmail.com/*",
-    "http://*.theglobeandmail.com/*"
+    "http://*.quora.com/*",
+    "https://*.quora.com/*",
+    "http://*.economist.com/*",
+    "https://*.economist.com/*",
+    "http://*.medium.com/*",
+    "https://*.medium.com/*",
+    "http://*.linkedin.com/*",
+    "https://*.linkedin.com/*"
    ]
 }
